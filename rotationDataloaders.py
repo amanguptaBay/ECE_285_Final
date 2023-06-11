@@ -17,7 +17,7 @@ def RotatedDataset(dataloader):
     outputClasses = torch.cat((out[1],out[1],out[1],out[1]),0)
     zeroes = torch.zeros((out[1].shape))
     outputAngles = torch.cat((zeroes, zeroes+1, zeroes+2, zeroes+3),0)
-    yield out
+    yield outputImages, outputClasses, outputAngles
 def RotatedDatasetOriginalClasses(dataloader):
     gen = RotatedDataset(dataloader)
     out = next(gen)
