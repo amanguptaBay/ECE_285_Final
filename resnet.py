@@ -82,6 +82,7 @@ class F(nn.Module):
 
 class Out(nn.Module):
     def __init__(self, outclasses = 100):
+        super().__init__()
         self.fc = nn.Linear(512, outclasses)
     def forward(self, x):
         return self.fc(x)
