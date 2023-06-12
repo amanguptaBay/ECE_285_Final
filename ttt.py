@@ -8,5 +8,5 @@ class TTT_System(nn.Module):
         self.B = B
         
     def forward(self, x):        
-        out = self.F
+        out = self.F(x)
         return self.A(out), self.B(out)
