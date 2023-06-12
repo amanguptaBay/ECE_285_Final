@@ -1,15 +1,5 @@
-########################################################################
-# TODO: Implement the forward function for the Resnet specified        #
-# above. HINT: You might need to create a helper class to              # 
-# define a Resnet block and then use that block here to create         #
-# the resnet layers i.e. conv2_x, conv3_x, conv4_x and conv5_x         #
-########################################################################
-# *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
-
 import torch.nn as nn
-
-import torch.nn as nn
-
+from ttt import TTT_System
 class ResNetBlock(nn.Module):
     def __init__(self, in_channels, out_channels, downsampling = False, batchNorm = False):
         super().__init__()
@@ -47,10 +37,9 @@ class ResNetBlock(nn.Module):
         out = self.relu(out)
         return out
 
-
-class ResNet(nn.Module):
+class F(nn.Module):
     def __init__(self, batchNorm = False):
-        super(ResNet, self).__init__()
+        super(F, self).__init__()
         self.conv1 = nn.Conv2d(3, 64, kernel_size=7, stride=2)
         self.relu = nn.ReLU(inplace=True)
         self.maxpool = nn.MaxPool2d(kernel_size=3, stride=2)
@@ -76,9 +65,7 @@ class ResNet(nn.Module):
         )
         
         self.avgpool = nn.AvgPool2d(6)
-        self.fc = nn.Linear(512, 100)
         self.flatten = nn.Flatten()
-        
     def forward(self, x):
         out = self.conv1(x)
         out = self.relu(out)
@@ -91,11 +78,26 @@ class ResNet(nn.Module):
         
         out = self.avgpool(out)
         out = self.flatten(out)
-        out = self.fc(out)
-        
         return out
 
+class Out(nn.Module):
+    def __init__(self, outclasses = 100):
+        self.fc = nn.Linear(512, outclasses)
+    def forward(self, x):
+        return self.fc(x)
 
-########################################################################
-#                             END OF YOUR CODE                         #
-########################################################################
+
+class ResNet(nn.Module):
+    def __init__(self, batchNorm = False):
+        super(ResNet, self).__init__()
+        self.F = F(batchNorm=batchNorm)
+        self.Out = Out(100)
+        
+    def forward(self, x):
+        out = self.F(x)
+        out = self.Out(out)
+        return out
+    @staticmethod
+    def TTT_Implementation(outClassesForMainTask, outClassesForSelfSupervisedTask, batchNorm = True):
+        return TTT_System(F(batchNorm = batchNorm), Out(outclasses = outClassesForMainTask),Out(outclasses = outClassesForSelfSupervisedTask))
+
