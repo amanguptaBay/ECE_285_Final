@@ -7,7 +7,7 @@ class RotatedDataset(torch.utils.data.Dataset):
         self.use_rotation_label = use_rotation_label
 
     def __getitem__(self, index):
-        image, label = self.dataset[math.floor(index/4)]
+        image, label = self.dataset[index]
         rotation_angle = index % 4 * 90 
         #TODO: Use_Rotation_Label logic has not been tested yet
         resized_image = transforms.functional.resize(image, (32,32))
@@ -16,4 +16,4 @@ class RotatedDataset(torch.utils.data.Dataset):
         return rotated_image, label
 
     def __len__(self):
-        return len(self.dataset)*4
+        return len(self.dataset)
